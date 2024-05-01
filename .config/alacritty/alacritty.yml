@@ -1,0 +1,22 @@
+window:
+  padding:
+    x: 5
+    y: 5
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+
+cursor:
+  style:
+    shape:  Underline
+
+font:
+  normal:
+    family: Jet Brains Mono Nerd Font
+    style: Regular
+  size: 12
+
+shell:
+  program: /usr/bin/zsh
