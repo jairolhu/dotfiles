@@ -41,13 +41,15 @@ def autostart():
     home = os.path.expanduser('~/.config/qtile/autostart.sh')
     subprocess.Popen([home])
 
+# @hook.subscribe.startup
+# def_():
+    
+
 import owm as ow
 
 mod = "mod4"
 terminal = "alacritty"
 menu = "rofi -show run"
-
-
 
 # Add key bindings to switch VTs in Wayland.
 # We can't check qtile.core.name in default config as it is loaded before qtile is started
@@ -88,7 +90,7 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2, margin = 8),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2, margin = 10),
     layout.Floating(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -103,6 +105,10 @@ layouts = [
     # layout.Zoomy(),
 ]
 
+def open_keys():
+    qtile.cmd_spawn("/usr/lib/mozc/mozc_tool --mode=config_dialog")
+
+
 extension_defaults = widget_defaults.copy()
 
 screens = [
@@ -111,20 +117,22 @@ screens = [
             [
         widget.Spacer(length=5),
 		widget.CurrentLayoutIcon(scale = 1.8),
-        #widget.GroupBox(highlight_method='block',
-                        #disable_drag=True,
-                        #font="Terminess Nerd Font Regular"),
         grp_box,
         widget.Spacer(),
 		widget.Clock(format="%a %d-%m-%Y %H:%M", font="Terminess Nerd Font Regular"),
 		widget.Spacer(length = 20),
 		widget.OpenWeather(location="Mexico City",
-				   format="{main_temp:.0f}°{units_temperature}"),
+				           format="{main_temp:.0f}°{units_temperature}"),
 		widget.Spacer(),
-        widget.Systray(icon_size = 20),
-        widget.Image(filename="/home/jairo/.icons/memory.png", margin=4),
+        #widget.Systray(icon_size = 20),
+        widget.Sep(padding = 25),
+        widget.Image(filename="/home/jairo/.icons/keyboard.png", 
+                     margin=2,
+                     mouse_callbacks={"Button1": open_keys}),
+        widget.Sep(padding = 25),
+	    widget.Image(filename="/home/jairo/.icons/memory.png", margin=4),
 		widget.Memory(format="{MemPercent}%"),
-		widget.Spacer(length=10),
+		widget.Spacer(length=20),
 	    ],
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
