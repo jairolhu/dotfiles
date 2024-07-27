@@ -22,7 +22,4 @@ y = 5
 
 [shell]
 program = "/usr/bin/zsh"
-
-[window]
-opacity = 0.8
-#blur = true
+#program = "/usr/bin/bash"

@@ -30,6 +30,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from keybinds import *
 from widgets import *
+from qtile_extras import widget
 
 import os
 import subprocess
@@ -64,7 +65,7 @@ for vt in range(1, 8):
         )
     )
 
-groups = [Group(i) for i in "1234"]
+groups = [Group(i) for i in "12345"]
 
 for i in groups:
     keys.extend(
@@ -102,7 +103,7 @@ layouts = [
     # layout.Tile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
-    # layout.Zoomy(),
+     layout.Spiral(),
 ]
 
 def open_keys():
@@ -119,18 +120,32 @@ screens = [
 		widget.CurrentLayoutIcon(scale = 1.8),
         grp_box,
         widget.Spacer(),
-		widget.Clock(format="%a %d-%m-%Y %H:%M", font="Terminess Nerd Font Regular"),
+		widget.Clock(format="%a %d-%m-%Y %H:%M"),
 		widget.Spacer(length = 20),
 		widget.OpenWeather(location="Mexico City",
 				           format="{main_temp:.0f}°{units_temperature}"),
 		widget.Spacer(),
-        #widget.Systray(icon_size = 20),
+                #widget.Systray(icon_size = 20),
+                #widget.WiFiIcon(interface="wlp6s0"),
+                #widget.IWD(show_image=True, show_text=False),
+        widget.Sep(padding = 25),
+        widget.Image(filename="/home/jairo/.icons/wifi4.png", 
+                     margin=4),
+        widget.Wlan(interface="wlp6s0", 
+                    format="{percent:2.0%}"),        
         widget.Sep(padding = 25),
         widget.Image(filename="/home/jairo/.icons/keyboard.png", 
-                     margin=2,
+                     margin=1,
                      mouse_callbacks={"Button1": open_keys}),
         widget.Sep(padding = 25),
-	    widget.Image(filename="/home/jairo/.icons/memory.png", margin=4),
+	    widget.Image(filename="/home/jairo/.icons/memory.png", 
+                     margin=3),
+		widget.CPU(format="{load_percent}%"),
+        widget.Spacer(length = 10),
+        widget.ThermalSensor(),
+        widget.Sep(padding = 25),
+	    widget.Image(filename="/home/jairo/.icons/ram4.png", 
+                     margin=2),
 		widget.Memory(format="{MemPercent}%"),
 		widget.Spacer(length=20),
 	    ],
@@ -165,7 +180,7 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
-auto_fullscreen = True
+auto_fullscreen = False
 focus_on_window_activation = "smart"
 reconfigure_screens = True
 

@@ -6,8 +6,11 @@ mod = "mod4"
 terminal = "alacritty"
 menu = "rofi -show run"
 menu_t = "rofi -show window"
+screenshot = "flameshot gui"
 
 keys = [
+    Key([mod, "shift"], "s", lazy.spawn(screenshot), desc="Take a screenshot"),
+
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
