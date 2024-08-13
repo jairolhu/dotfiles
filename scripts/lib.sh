@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo pacman -Syu
+
 # Instalar programas esenciales
 sudo pacman -S networkmanager grub efibootmgr xorg lightdm lightdm-gtk-greeter xfce4 xfce4-goodies alacritty git neofetch firefox rofi pulseaudio pavucontrol htop xdg-user-dirs zsh gvfs-mtp gvfs-gphoto2 calibre qbittorrent bc mpd ncmpcpp ntp cron adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts r rstudio timeshift ibus-mozc p7zip-gui
 
