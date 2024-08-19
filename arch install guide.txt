@@ -1,0 +1,63 @@
+loadkeys la-latin1
+timedatectl set-ntp true #Sincronizar el reloj
+
+iwctl #conexión a internet
+device list #checas cómo se llama el adaptador de la computadora
+station "adapatador" scan
+station "adapatador" get-networks
+station "adaptador" connect FamiliaLara
+quit
+ping google.com #checamos que sí haya conexión
+
+lsblk #vemos todos los discos duros y particiones
+cfdisk /dev/#agarra el dico que vas a utilizar
+#gpt si disco duro de más de 2TB sino dos
+#128M - apretamos b para hacerlo boot
+#El resto los hacemos primarios
+#writeamos
+
+mkfs.fat -F 32 /dev/sda1
+mkfs.ext4 /dev/sda2
+
+mount /dev/sda2 /mnt
+mkdir -p /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
+
+lsblk #checamos que todo está correcto
+
+pacstrap /mnt base base-devel linux linux-firmware nano
+
+genfstab /mnt
+genfstab -U /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt /bin/bash
+
+pacman -S networkmanager grub efibootmgr git
+
+systemctl enable NetworkManager lightdm 
+
+grub-install --target=x86_64-efi --efi-directory=/boot/efi
+
+nano /etc/default/grub
+#Descomentamos la última línea de disable os prober
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+passwd
+nano /etc/locale.gen #Elegimos el inglés, el español y el japonés
+locale-gen
+
+nano /etc/locale.conf
+#LANG="en_US.UTF-8"
+
+nano /etc/hostname
+#Pones tu hostname
+
+useradd -mg wheel jairo
+passwd jairo
+nano /etc/sudoers
+#Descomentamos wheel All=(All) All
+
+exit
+umount -R /mnt
+reboot
