@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo pacman -Syu
+
 # AUR
 git clone https://aur.archlinux.org/yay.git
 cd yay
@@ -32,23 +34,10 @@ yay -S ibus-autostart
 xdg-user-dirs-update
 systemctl enable lightdm
 
-# Oh my zsh
-sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-
 # Horario
 timedatectl set-timezone America/Mexico_City
 timedatectl set-ntp true
 systemctl restart systemd-timesyncd
-
-# AUR
-mkdir Downloads/git
-cd Downloads/git
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -sri
-cd
-#yay -S gtk3-patched-filechooser-icon-view glib2-patched-thumbnailer papirus-icon-theme-git ibus-autostart
-yay -S ibus-autostart
 
 # Mover archivos de configuración
 sudo rsync -a /home/jairo/dotfiles/.config /home/jairo

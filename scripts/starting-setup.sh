@@ -25,7 +25,7 @@ xdg-user-dirs-update
 systemctl enable lightdm
 
 # Oh my zsh
-sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+#sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 # Horario
 timedatectl set-timezone America/Mexico_City
