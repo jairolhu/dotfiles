@@ -1,3 +1,5 @@
+#IMPORTANTÍSIMO CHECAR SI ESTAMOS EN UEFI
+
 loadkeys la-latin1
 timedatectl set-ntp true #Sincronizar el reloj
 
@@ -27,14 +29,13 @@ lsblk #checamos que todo está correcto
 
 pacstrap /mnt base base-devel linux linux-firmware nano
 
-genfstab /mnt
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash
 
 pacman -S networkmanager grub efibootmgr git
 
-systemctl enable NetworkManager lightdm 
+systemctl enable NetworkManager
 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi
 

@@ -20,6 +20,8 @@ multiplier = 3
 x = 5
 y = 5
 
-[shell]
+[terminal]
+
+[terminal.shell]
 program = "/usr/bin/zsh"
 #program = "/usr/bin/bash"
