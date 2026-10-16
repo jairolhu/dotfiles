@@ -1,16 +1,6 @@
 #!/bin/bash
 
-# Chaotic AUR
-sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-sudo pacman-key --lsign-key 3056513887B78AEB
-sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-
-sudo tee -a /etc/pacman.conf << EOF > /dev/null
-
-[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist
-EOF
+sudo pacman -Syu
 
 # Enable [lib32] (Artix ships it commented out)
 if ! grep -q '^\[lib32\]' /etc/pacman.conf; then
@@ -26,6 +16,38 @@ Include = /etc/pacman.d/mirrorlist
 EOF
     fi
 fi
+
+# Arch repos on Artix (extra + multilib)
+sudo pacman -Syu --noconfirm
+sudo pacman -S --needed --noconfirm artix-archlinux-support lib32-artix-archlinux-support
+
+# Append AFTER the Artix repos (the script runs after the lib32 block, so this holds)
+for repo in extra multilib; do
+    if ! grep -q "^\[$repo\]" /etc/pacman.conf; then
+        sudo tee -a /etc/pacman.conf << EOF > /dev/null
+
+[$repo]
+Include = /etc/pacman.d/mirrorlist-arch
+EOF
+    fi
+done
+
+sudo pacman-key --populate archlinux
+
+# Chaotic AUR
+sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key 3056513887B78AEB
+sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+
+sudo tee -a /etc/pacman.conf << EOF > /dev/null
+
+[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+EOF
+
+
+
 
 # Actualizar pacman
 sudo pacman -Syyu
