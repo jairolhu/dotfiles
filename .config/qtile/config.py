@@ -41,6 +41,7 @@ from libqtile import hook
 def autostart():
     home = os.path.expanduser('~/.config/qtile/autostart.sh')
     subprocess.Popen([home])
+    subprocess.Popen(["nm-applet"])
 
 # @hook.subscribe.startup
 # def_():
@@ -50,7 +51,7 @@ import owm as ow
 
 mod = "mod4"
 terminal = "alacritty"
-menu = "rofi -show run"
+menu = "rofi -show drun"
 
 # Add key bindings to switch VTs in Wayland.
 # We can't check qtile.core.name in default config as it is loaded before qtile is started
@@ -91,7 +92,7 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2, margin = 10),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2, margin = 5),
     layout.Floating(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -103,7 +104,7 @@ layouts = [
     # layout.Tile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
-     layout.Spiral(),
+    # layout.Spiral(),
 ]
 
 def open_keys():
@@ -120,23 +121,23 @@ screens = [
 		widget.CurrentLayoutIcon(scale = 1.8),
         grp_box,
         widget.Spacer(),
-		widget.Clock(format="%a %d-%m-%Y %H:%M"),
+		widget.Clock(format="%a  %d-%m-%Y  %H:%M",
+                     mouse_callbacks={"Button1": lazy.spawn("sh -c 'pkill gsimplecal || gsimplecal'")} ),
 		widget.Spacer(length = 20),
 		widget.OpenWeather(location="Mexico City",
-				           format="{main_temp:.0f}°{units_temperature}"),
+                           app_key = "3e81e31c8930396ad85466a20f68723a",
+				           format="{icon} {main_temp:.0f}°{units_temperature}"),
 		widget.Spacer(),
-                #widget.Systray(icon_size = 20),
-                #widget.WiFiIcon(interface="wlp6s0"),
-                #widget.IWD(show_image=True, show_text=False),
         widget.Sep(padding = 25),
         widget.Image(filename="/home/jairo/.icons/wifi4.png", 
                      margin=4),
         widget.Wlan(interface="wlp6s0", 
-                    format="{percent:2.0%}"),        
+                    format="{percent:2.0%}",
+                    mouse_callbacks={"Button1": lazy.spawn("networkmanager_dmenu")}),
         widget.Sep(padding = 25),
         widget.Image(filename="/home/jairo/.icons/keyboard.png", 
                      margin=1,
-                     mouse_callbacks={"Button1": open_keys}),
+                     mouse_callbacks={"Button1": lazy.spawn("/usr/lib/mozc/mozc_tool --mode=config_dialog")}),
         widget.Sep(padding = 25),
 	    widget.Image(filename="/home/jairo/.icons/memory.png", 
                      margin=3),
@@ -165,7 +166,7 @@ screens = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
-bring_front_click = False
+#bring_front_click = False
 floats_kept_above = True
 cursor_warp = False
 floating_layout = layout.Floating(
@@ -199,7 +200,7 @@ wl_input_rules = None
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+wmname = "qtile"
 
 
 

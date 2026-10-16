@@ -1,0 +1,40 @@
+#!/bin/sh
+# Launch ncmpcpp with cover art (ueberzugpp).
+# Logs: /tmp/ncmpcpp-ueberzug.log (this wrapper + ueberzugpp)
+#       /tmp/ncmpcpp-cover.log    (cover script)
+#
+# Output backend: x11 by default. Override like this:
+#   UEBERZUG_OUTPUT=wayland ncmpcpp-cover     (sway / hyprland / wayfire only)
+
+UEBERZUG_OUTPUT="${UEBERZUG_OUTPUT:-x11}"
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+cover_script="$script_dir/ncmpcpp_cover_art.sh"
+log="/tmp/ncmpcpp-ueberzug.log"
+
+for cmd in ueberzugpp mpc ncmpcpp tail; do
+    command -v "$cmd" >/dev/null 2>&1 || { echo "Missing program: $cmd" >&2; exit 1; }
+done
+[ -x "$cover_script" ] || { echo "Not executable: $cover_script (run chmod +x on it)" >&2; exit 1; }
+
+export FIFO_UEBERZUG="/tmp/mpd-ueberzug-$$"
+
+cleanup() {
+    trap - EXIT INT TERM HUP
+    pkill -f ncmpcpp_cover_art.sh 2>/dev/null
+    pkill -P $$ 2>/dev/null
+    rm -f "$FIFO_UEBERZUG" /tmp/mpd_cover_*.jpg
+}
+trap cleanup EXIT
+trap 'exit 1' INT TERM HUP
+
+rm -f "$FIFO_UEBERZUG"
+mkfifo "$FIFO_UEBERZUG" || exit 1
+: > "$log"
+
+# The cover pipeline: whatever is written to the FIFO goes to ueberzugpp
+tail --follow "$FIFO_UEBERZUG" 2>>"$log" | ueberzugpp layer -o "$UEBERZUG_OUTPUT" >>"$log" 2>&1 &
+
+# ncmpcpp only runs the cover script on song CHANGE, so draw the current song once at startup
+( sleep 1; "$cover_script" ) &
+
+ncmpcpp "$@"

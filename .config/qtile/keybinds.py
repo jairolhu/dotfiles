@@ -1,15 +1,41 @@
 from libqtile.config import Key, Click, Drag
 from libqtile.lazy import lazy
+import os
 
+os.environ["PATH"] = os.path.expanduser("~/.local/bin") + ":" + os.environ.get("PATH", "")
 
+power_menu = "rofi -show power-menu -modi power-menu:rofi-power-menu"
+explorer = "thunar"
 mod = "mod4"
 terminal = "alacritty"
-menu = "rofi -show run"
+menu = "rofi -show drun"
 menu_t = "rofi -show window"
 screenshot = "flameshot gui"
+full_screenshot = f"flameshot full -p {os.path.expanduser('~/Pictures')}"
+
+def window_to_next_group(qtile):
+    win = qtile.current_window
+    if win is None:
+        return
+    i = qtile.groups.index(qtile.current_group)
+    win.togroup(qtile.groups[(i + 1) % len(qtile.groups)].name, switch_group=True)
+
+def window_to_prev_group(qtile):
+    win = qtile.current_window
+    if win is None:
+        return
+    i = qtile.groups.index(qtile.current_group)
+    win.togroup(qtile.groups[(i - 1) % len(qtile.groups)].name, switch_group=True)
 
 keys = [
     Key([mod, "shift"], "s", lazy.spawn(screenshot), desc="Take a screenshot"),
+    Key([mod, "shift"], "d", lazy.spawn(full_screenshot), desc="Take a screenshot"),
+
+    Key([mod], "e", lazy.spawn(explorer), desc="Open file explorer"),
+    Key([mod], "q", lazy.spawn(power_menu), desc="Open power menu"),
+
+    Key(["mod1", "control", "shift"], "Right", lazy.function(window_to_next_group)),
+    Key(["mod1", "control", "shift"], "Left", lazy.function(window_to_prev_group)),
 
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
@@ -40,11 +66,14 @@ keys = [
 
     Key([mod, "control"], "Right", lazy.screen.next_group(), "Switch to next workspace"),
     Key([mod, "control"], "Left", lazy.screen.prev_group(), "Switch to next workspace"),
+
+    Key([mod, "shift"], "m", lazy.window.toggle_minimize(), desc="Minimize window"),
+    Key([mod, "shift"], "u", lazy.group.unminimize_all(), desc="Restore minimized"),
 ]
 
 # Drag floating layouts
+bring_front_click = "floating_only"
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button1", lazy.window.bring_to_front()),
+    Drag(["mod1"], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag(["mod1"], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
 ]

@@ -74192,3 +74192,10 @@ Feb 06 20:04 : player: played "Yorushika/負け犬にアンコールはいらな
 Feb 06 20:05 : player: played "Yorushika/負け犬にアンコールはいらない/05 落下.flac"
 Feb 06 20:06 : exception: Failed to create /home/jairo/.mpd/state: No such file or directory
 Feb 06 20:08 : exception: Failed to create /home/jairo/.mpd/state: No such file or directory
+2025-05-23T13:58:47 exception: Failed to open "/home/jairo/.mpd/state": No such file or directory
+2025-05-23T13:58:47 exception: Failed to access /run/media/jairo/Datos Jairo: No such file or directory
+2025-05-23T13:58:47 exception: inotify_add_watch("/run/media/jairo/Datos Jairo") failed: No such file or directory
+2025-05-23T23:48:44 exception: Failed to create /home/jairo/.mpd/state: No such file or directory
+2025-06-20T18:35:47 exception: Failed to open "/home/jairo/.mpd/state": No such file or directory
+2025-06-20T18:35:47 exception: inotify_add_watch("/run/media/jairo/Datos Jairo") failed: No such file or directory
+2025-06-21T00:17:48 exception: Failed to create /home/jairo/.mpd/state: No such file or directory

@@ -25,3 +25,8 @@ y = 5
 [terminal.shell]
 program = "/usr/bin/zsh"
 #program = "/usr/bin/bash"
+
+[window.dimensions]
+columns = 105
+lines = 30
+

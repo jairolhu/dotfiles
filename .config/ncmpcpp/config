@@ -311,7 +311,8 @@
 ##   available.
 ##
 #
-#song_columns_list_format = (20)[]{a} (6f)[green]{NE} (50)[white]{t|f:Title} (20)[cyan]{b} (7f)[magenta]{l}
+song_columns_list_format = "(25)[blue]{a} (35)[white]{t|f} (10f)[magenta]{l} (25)[]{}"
+#
 #
 ##### various settings #####
 #
@@ -596,3 +597,5 @@ media_library_primary_tag = album_artist
 #
 #active_window_border = red
 #
+#
+execute_on_song_change = "/home/jairo/.config/ncmpcpp-ueberzug/ncmpcpp_cover_art.sh"

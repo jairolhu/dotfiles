@@ -1,0 +1,17 @@
+sudo pacman -S texlive texlive-lang
+sudo pacman -S xclip
+
+
+
+
+
+
+
+
+#R Markdown
+sudo pacman -S pandoc gcc gcc-fortran make libxml2 openssl curl
+
+install.packages("rmarkdown")
+install.packages("knitr")
+install.packages("tinytex")
+tinytex::install_tinytex()

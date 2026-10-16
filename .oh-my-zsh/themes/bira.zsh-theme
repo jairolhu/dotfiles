@@ -1,6 +1,6 @@
 local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 #local user_host="%B%(!.%{$fg[red]%}.%{$fg[green]%})%n@%m%{$reset_color%} "
-local user_symbol='%(!.#.$)'
+local user_symbol='%(!.#.❯)'
 local current_dir="%B%{$fg[blue]%}%~ %{$reset_color%}"
 local conda_prompt='$(conda_prompt_info)'
 
