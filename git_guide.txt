@@ -1,0 +1,15 @@
+# Push
+git status                
+git add .                 
+git commit -m "description"
+git push  
+
+# Clone
+git clone https://github.com/username/reponame.git
+
+# Pull
+git stash        # set your local edits aside
+git pull         # get the updates
+
+# Shit's gone
+git reset --soft origin/main     # undo unpushed commits, keep changes staged
